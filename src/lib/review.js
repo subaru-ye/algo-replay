@@ -1,8 +1,20 @@
 export const MASTERY_CONFIG = {
-  completely_lost: { label: '完全不会', color: 'bg-red-100 text-red-700 border-red-200', schedule: [1, 3, 7, 15] },
-  almost_there: { label: '差一点', color: 'bg-amber-100 text-amber-700 border-amber-200', schedule: [2, 5, 10] },
-  perfect: { label: '完美完成', color: 'bg-emerald-100 text-emerald-700 border-emerald-200', schedule: [] },
+  completely_lost:      { label: '毫无头绪',   color: 'bg-red-100 text-red-700 border-red-200',         schedule: [1, 3, 7, 14] },
+  saw_pattern:          { label: '有印象没写出', color: 'bg-orange-100 text-orange-700 border-orange-200', schedule: [2, 5, 10] },
+  struggled_through:    { label: '磕绊做对',   color: 'bg-amber-100 text-amber-700 border-amber-200',   schedule: [3, 7, 14] },
+  solved_independently: { label: '独立做对',   color: 'bg-blue-100 text-blue-700 border-blue-200',      schedule: [7, 14] },
+  nailed_it:            { label: '信手拈来',   color: 'bg-emerald-100 text-emerald-700 border-emerald-200', schedule: [] },
 };
+
+/** 旧版 key → 新版 key 映射，用于兼容历史数据 */
+const LEGACY_KEY_MAP = {
+  almost_there: 'struggled_through',
+  perfect: 'nailed_it',
+};
+
+export function normalizeLegacyLevel(level) {
+  return LEGACY_KEY_MAP[level] || level;
+}
 
 export function formatLocalDate(date) {
   const yyyy = date.getFullYear();

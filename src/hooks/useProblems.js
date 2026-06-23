@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { MASTERY_CONFIG, calcReviewDates, getLocalDateTime, getToday } from '@/lib/review';
+import { MASTERY_CONFIG, calcReviewDates, getLocalDateTime, getToday, normalizeLegacyLevel } from '@/lib/review';
 
 const KEY = 'algo-problems';
 const BACKUP_VERSION = 1;
@@ -21,11 +21,13 @@ function isValidDateString(value) {
 }
 
 function isValidMasteryLevel(value) {
-  return Object.prototype.hasOwnProperty.call(MASTERY_CONFIG, value);
+  return Object.prototype.hasOwnProperty.call(MASTERY_CONFIG, normalizeLegacyLevel(value));
 }
 
 function normalizeAttempt(attempt, fallbackDate, fallbackLevel) {
-  const masteryLevel = isValidMasteryLevel(attempt?.masteryLevel) ? attempt.masteryLevel : fallbackLevel;
+  const masteryLevel = normalizeLegacyLevel(
+    isValidMasteryLevel(attempt?.masteryLevel) ? attempt.masteryLevel : fallbackLevel
+  );
   return {
     masteryLevel,
     date: isValidDateString(attempt?.date) ? attempt.date : fallbackDate,
@@ -38,7 +40,9 @@ function normalizeProblem(problem, { strict = false } = {}) {
   const problemNumber = String(problem.problemNumber || '').trim();
   const problemName = String(problem.problemName || '').trim();
   const dateSolved = isValidDateString(problem.dateSolved) ? problem.dateSolved : '';
-  const masteryLevel = isValidMasteryLevel(problem.masteryLevel) ? problem.masteryLevel : '';
+  const masteryLevel = normalizeLegacyLevel(
+    isValidMasteryLevel(problem.masteryLevel) ? problem.masteryLevel : ''
+  );
 
   if (!problemNumber || !problemName || !dateSolved || !masteryLevel) {
     return strict ? null : {

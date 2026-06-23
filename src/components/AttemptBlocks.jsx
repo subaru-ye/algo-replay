@@ -9,8 +9,10 @@ import {
 
 const COLOR_MAP = {
   completely_lost: 'bg-red-500',
-  almost_there: 'bg-amber-500',
-  perfect: 'bg-emerald-500',
+  saw_pattern: 'bg-orange-500',
+  struggled_through: 'bg-amber-500',
+  solved_independently: 'bg-blue-500',
+  nailed_it: 'bg-emerald-500',
 };
 
 export function AttemptBlocks({ attempts, onAdd }) {
